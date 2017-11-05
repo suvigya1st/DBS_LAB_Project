@@ -5,7 +5,6 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="static/css/hsh.css">
-	<link rel="stylesheet" type="text/css" href="static/css/reg.css">
 </head>
 <body>
 	<nav class="navbar navbar-default navbar-fixed-top">
@@ -43,26 +42,26 @@
 			{% if error  %}
 		<span style="color: red;">{{ error }} </span>
 			{% endif %}
-
 		</div>
 	</div>
 	<div class="container main">
-		<div class="row">
-			<div class="col-md-12">
-				<h2>Register</h2>
-				<form action="added" method="post">
-					<input type="text" name="a_name" placeholder="Appliance Name" style="width: 48%;" required>
-					<br>
-					<input type="text" name="w_date" placeholder="Warranty Start Date (yyyy-mm-dd)" style="width: 48%;" required>
-					<br>
-					<input type="text" name="w_duration" placeholder="Warranty Duration" style="width: 48%;" required>
-					<br>
-					<input type="text" name="cur_state" placeholder="Current State (on/off)" style="width: 48%;" required>
-					<br>
-					<input type="Submit" name="Register" value="Register" style="width: 23%;">
-				</form>
-			</div>
-		</div>
+		{% if del_app_li %}
+			<table>
+			<tr>
+				<th>Application Id</th>
+				<th>Application Name</th>
+				<th>Current State</th>
+			</tr>
+				{% for i in del_app_li %}		
+					<tr>
+						{% for j in i %}
+							<td>{{j}}</td>
+							<td>
+						{% endfor %}
+					</tr>
+				{% endfor %}
+			</table>
+		{% endif %}
 	</div>
 	<div class="container main">
 		<div class="row flex">
