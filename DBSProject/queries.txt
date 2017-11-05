@@ -1,0 +1,109 @@
+create database hsh;
+use hsh;
+show tables;
+
+CREATE TABLE Address
+(addr_id int AUTO_INCREMENT,
+building_name varchar(20),
+street_name varchar(20),
+city varchar(20),
+state varchar(20),
+primary key(addr_id))
+AUTO_INCREMENT = 1001;
+
+
+CREATE TABLE Appliance
+(appliance_id int AUTO_INCREMENT,
+cus_id int,
+appliance_name varchar(20),
+warranty_start_date date,
+warranty_duration int,
+current_state varchar(5),
+primary key (appliance_id, cus_id),
+foreign key (cus_id) references Customer(cus_id))
+AUTO_INCREMENT = 2001;
+
+CREATE TABLE Activity
+(appliance_id int,
+switch_on_time datetime,
+switch_off_time datetime,
+primary key(appliance_id,switch_on_time),
+foreign key(appliance_id)references Appliance(appliance_id));
+
+CREATE TABLE Name
+(name_id int AUTO_INCREMENT,
+first_name varchar(20) not null,
+middle_name varchar(20),
+last_name varchar(20) not null,
+primary key(name_id))
+AUTO_INCREMENT = 3001;
+
+CREATE TABLE Customer
+(cus_id int AUTO_INCREMENT,
+password varchar(20),
+cus_name_id int,
+cus_email_id varchar(30),
+addr_id int,
+primary key(cus_id),
+foreign key(cus_name_id) references Name(name_id),
+foreign key(addr_id) references Address(addr_id))
+AUTO_INCREMENT = 4001;
+
+
+CREATE TABLE Company
+(company_name varchar(20),
+location varchar(20),
+primary key(company_name,location));
+
+CREATE TABLE Employee
+(emp_id int AUTO_INCREMENT,
+password varchar(20),
+company_name varchar(20),
+emp_name_id int,
+emp_email varchar(30),
+gender varchar(10),
+dob date,
+addr_id int,
+salary int,
+primary key(emp_id,company_name),
+foreign key(company_name) references Company(company_name),
+foreign key(emp_name_id) references Name(name_id),
+foreign key(addr_id) references Address(addr_id))
+AUTO_INCREMENT = 5001;
+
+CREATE TABLE Employee_contact
+(emp_id int,
+emp_contact_no int,
+primary key(emp_id,emp_contact_no),
+foreign key(emp_id) references Employee(emp_id));
+
+CREATE TABLE Customer_contact
+(cus_id int,
+cus_contact_no int,
+primary key(cus_id,cus_contact_no),
+foreign key(cus_id) references Customer(cus_id));
+
+CREATE TABLE Complaint
+(complaint_no int AUTO_INCREMENT,
+cus_id int,
+launch_date date,
+current_state varchar(10),
+primary key(complaint_no,cus_id),
+foreign key (cus_id) references Customer(cus_id))
+AUTO_INCREMENT = 6001;
+
+
+CREATE TABLE ComplaintDetail
+(complaint_no int,
+appliance_id int,
+description varchar(40),
+primary key(complaint_no,appliance_id),
+foreign key(complaint_no) references Complaint(complaint_no),
+foreign key(appliance_id)references Appliance(appliance_id));
+
+CREATE TABLE ComplaintAssigned
+(complaint_no int,
+emp_id int,
+primary key(complaint_no,emp_id),
+foreign key(complaint_no) references Complaint(complaint_no),
+foreign key(emp_id) references Employee(emp_id));
