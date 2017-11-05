@@ -1,0 +1,84 @@
+create database hsh;
+use hsh;
+
+CREATE TABLE Address
+(addr_id int,
+building_name varchar(20),
+street_name varchar(20),
+city varchar(20),
+state varchar(20),
+primary key(addr_id));
+
+show tables;
+
+CREATE TABLE Residence
+(residence_id int,
+addr_id int,
+primary key (residence_id, addr_id),
+foreign key (addr_id) references Address(addr_id));
+
+CREATE TABLE Appliance
+(appliance_id int,
+residence_id int,
+appliance_name varchar(20),
+warranty_start_date date,
+warranty_duration int,
+current_state varchar(5),
+primary key (appliance_id,residence_id),
+foreign key (residence_id) references Residence(residence_id));
+
+CREATE TABLE Activity
+(appliance_id int,
+switch_on_time datetime,
+switch_off_time datetime,
+primary key(appliance_id,switch_on_time),
+foreign key(appliance_id)references Appliance(appliance_id));
+
+CREATE TABLE Name
+(name_id int,
+first_name varchar(20) not null,
+middle_name varchar(20),
+last_name varchar(20) not null,
+primary key(name_id));
+
+CREATE TABLE Customer
+(cus_id int,
+cus_name_id int,
+cus_email_id varchar(30),
+residence_id int,
+dob date,
+primary key(cus_id),
+foreign key(cus_name_id) references Name(name_id),
+foreign key(residence_id) references Residence(residence_id));
+
+CREATE TABLE Company
+(company_name varchar(20),
+location varchar(20),
+primary key(company_name,location));
+
+CREATE TABLE Employee
+(emp_id int,
+company_name varchar(20),
+emp_name_id int,
+emp_email varchar(30),
+gender varchar(10),
+dob date,
+addr_id int,
+salary int,
+primary key(emp_id,company_name),
+foreign key(company_name) references Company(company_name),
+foreign key(emp_name_id) references Name(name_id),
+foreign key(addr_id) references Address(addr_id));
+
+CREATE TABLE Employee_contact
+(emp_id int,
+emp_contact_no int,
+primary key(emp_id,emp_contact_no),
+foreign key(emp_id) references Employee(emp_id));
+
+CREATE TABLE Customer_contact
+(cus_id int,
+cus_contact_no int,
+primary key(cus_id,cus_contact_no),
+foreign key(cus_id) references Customer(cus_id));
+
