@@ -1,0 +1,47 @@
+from flask import Flask,render_template,request,session
+app = Flask(__name__)
+
+@app.route('/home',methods=['GET'])
+def home():
+	return render_template('index.html')
+
+@app.route('/display',methods=['POST','GET'])
+def display():
+	if request.method == "POST":
+		data = request.form
+		if data['username']=='utkarsh' and data['password']=='utkarsh':
+			session[data['username']]=True
+			print(type(data))
+			print(data)
+			return ""
+	elif request.method == "GET":
+		data = request.args["name"]
+		print(data)
+		return "GET REQUEST"
+
+def get_forwarded_ip():
+	frwrd = request.headers.getlist("X-Forwarded-For")
+	if not frwrd:
+		return request.remote_addr.encode("utf-8")
+	else:
+		return frwrd[0].encode("utf-8")
+
+@app.route('/')
+def root():
+	print request.headers
+	print request.remote_addr
+	print request.access_route
+	print type(get_forwarded_ip())
+	return (get_forwarded_ip())
+
+@app.route('/number/<num>',methods=["GET"])
+def number(num=""):
+	n = int(num)
+
+	return str(n*n)
+
+
+
+
+if __name__ == '__main__':
+	app.run(debug=True)
