@@ -42,14 +42,16 @@ last_name varchar(20) not null,
 primary key(name_id));
 
 CREATE TABLE Customer
-(cus_id int,
+(cus_id int AUTO_INCREMENT,
 cus_name_id int,
 cus_email_id varchar(30),
 residence_id int,
 dob date,
 primary key(cus_id),
 foreign key(cus_name_id) references Name(name_id),
-foreign key(residence_id) references Residence(residence_id));
+foreign key(residence_id) references Residence(residence_id),
+AUTO_INCREMENT = 1001);
+
 
 CREATE TABLE Company
 (company_name varchar(20),
