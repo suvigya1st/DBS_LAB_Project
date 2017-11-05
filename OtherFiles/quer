@@ -40,6 +40,7 @@ AUTO_INCREMENT = 3001;
 
 CREATE TABLE Customer
 (cus_id int AUTO_INCREMENT,
+password varchar(20),
 cus_name_id int,
 cus_email_id varchar(30),
 addr_id int,
@@ -57,6 +58,7 @@ primary key(company_name,location));
 
 CREATE TABLE Employee
 (emp_id int AUTO_INCREMENT,
+password varchar(20),
 company_name varchar(20),
 emp_name_id int,
 emp_email varchar(30),
@@ -79,7 +81,7 @@ foreign key(emp_id) references Employee(emp_id));
 CREATE TABLE Customer_contact
 (cus_id int,
 cus_contact_no int,
-primary key(cus_id,cus_contact_no),
+primary key(cus_id,cus_contact_no),s
 foreign key(cus_id) references Customer(cus_id));
 
 CREATE TABLE Complaint
