@@ -13,6 +13,12 @@
 				<h1><i class="fa fa-home" aria-hidden="true"></i> Home Safe Home</h1>
 			</center>
 			<p style="text-align: center;"><em>Real. Trusted. Secure.</em></p>
+			{% if cusid  %}
+				{{ cusid }} 
+			{% endif %}
+			{% if error  %}
+		<span style="color: red;">{{ error }} </span>
+			{% endif %}
 		</div>
 	</div>
 	<div class="container back">
@@ -21,7 +27,7 @@
 				<h2>Login</h2>
 				<!-- action - where the form sends data to-->
 				<!-- method - what http method (get/post)-->
-				<form action="login_test" method="get">
+				<form action="login_test" method="post">
 					<input type="text" name="username" placeholder="Customer ID" required style="width: 48%;">
 					<br>
 					<input type="password" name="password" placeholder="Password" required style="width: 48%;">

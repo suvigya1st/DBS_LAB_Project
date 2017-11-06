@@ -26,7 +26,7 @@
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="about"><i class="fa fa-user-circle" aria-hidden="true"></i> About Us</a></li>
 					<li><a href="contact"><i class="fa fa-comments" aria-hidden="true"></i> Contact Us</a></li>
-					<li><a href="login"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
+					<li><a href="logout"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
 				</ul>
 			</div>	
 		</div>
@@ -37,16 +37,24 @@
 				<h1><i class="fa fa-home" aria-hidden="true"></i> Home Safe Home</h1>
 			</center>
 			<p style="text-align: center;"><em>Real. Trusted. Secure.</em></p>
+			<br><br>
+			{% if cusid  %}
+			<p style="text-align: center;"><strong>Customer ID : </strong><em>{{ cusid }}</em></p>
+			{% endif %}
+			{% if error  %}
+			<span style="color: red;">{{ error }} </span>
+			{% endif %}
+
 		</div>
 	</div>
 	<div class="container main">
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-md-12" style="text-align: center;">
 				<h2>Register</h2>
 				<form action="added" method="post">
 					<input type="text" name="a_name" placeholder="Appliance Name" style="width: 48%;" required>
 					<br>
-					<input type="text" name="w_date" placeholder="Warranty Start Date (dd-mm-yyyy)" style="width: 48%;" required>
+					<input type="text" name="w_date" placeholder="Warranty Start Date (yyyy-mm-dd)" style="width: 48%;" required>
 					<br>
 					<input type="text" name="w_duration" placeholder="Warranty Duration" style="width: 48%;" required>
 					<br>

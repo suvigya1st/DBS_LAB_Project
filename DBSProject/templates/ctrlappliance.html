@@ -46,22 +46,33 @@
 		</div>
 	</div>
 	<div class="container main">
-		<div class="row" >
-			<div class="col-lg-6 col-md-6 col-sm-12 alignment">
-				<a href="add_app""><button class="button1" type="button" value="Appliances">Add Appliances</button></a> 
-			</div>
-			<div class="col-lg-6 col-md-6 col-sm-12 alignment">
-				<a href="del_app"><button class="button1" type="button" value="Complaint">Delete Appliance</button></a> 
+		<div class="row">
+			<div class="col-md-12" style="text-align: center;">
+				<h3>Appliances</h3>
 			</div>
 		</div>
-		<div class="row" >
-			<div class="col-lg-6 col-md-6 col-sm-12 alignment">
-				<a href="ctrl_app"><button class="button1" type="button" value="Personal Information">Control Appliance</button></a> 
+		{% if del_app_li %}
+		<div class="row">
+			<div class="col-lg-4 col-md-4 col-sm-12" style="text-align: center;">
+				<h4>ID</h4>
 			</div>
-			<div class="col-lg-6 col-md-6 col-sm-12 alignment">
-				<a href="rep_app"><button class="button1" type="button" value="Electricity Consumption">Appliance Report</button></a> 
+			<div class="col-lg-4 col-md-4 col-sm-12" style="text-align: center;">
+				<h4>Name</h4>
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-12" style="text-align: center;">
+				<h4>State</h4>
 			</div>
 		</div>
+		<div class="row">
+			{% for i in del_app_li %}
+			{% for j in i %}
+			<div class="col-lg-4 col-md-4 col-sm-12" style="text-align: center;">
+				{{j}}
+			</div>
+			{% endfor %}
+			{% endfor %}
+		</div>
+		{% endif %}
 	</div>
 	<div class="container main">
 		<div class="row flex">

@@ -46,23 +46,27 @@
 		</div>
 	</div>
 	<div class="container main">
-		<div class="row" >
-			<div class="col-lg-6 col-md-6 col-sm-12 alignment">
-				<a href="add_app""><button class="button1" type="button" value="Appliances">Add Appliances</button></a> 
-			</div>
-			<div class="col-lg-6 col-md-6 col-sm-12 alignment">
-				<a href="del_app"><button class="button1" type="button" value="Complaint">Delete Appliance</button></a> 
-			</div>
-		</div>
-		<div class="row" >
-			<div class="col-lg-6 col-md-6 col-sm-12 alignment">
-				<a href="ctrl_app"><button class="button1" type="button" value="Personal Information">Control Appliance</button></a> 
-			</div>
-			<div class="col-lg-6 col-md-6 col-sm-12 alignment">
-				<a href="rep_app"><button class="button1" type="button" value="Electricity Consumption">Appliance Report</button></a> 
-			</div>
-		</div>
-	</div>
+		{% if del_app_li %}
+			<form action="deleted" method="post">
+			<table cellspacing=20px>
+			<tr>
+				<th>Application Id</th>
+				<th>Application Name</th>
+				<th>Current State</th>
+			</tr>
+				{% for i in del_app_li %}		
+					<tr>
+						{% for j in i %}
+							<td>{{j}}</td>
+						{% endfor %}
+						<td><input type="checkbox" name="del_app" value={{i[0]}}></td>
+					</tr>
+				{% endfor %}
+			</table>
+			<input type="submit" name="Delete" value="Delete">
+			</form>
+		{% endif %}
+</div>
 	<div class="container main">
 		<div class="row flex">
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
