@@ -1,0 +1,85 @@
+body{
+	/*gradient name: between the clouds- uigradients.com*/
+background: #73C8A9;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to top, #373B44, #73C8A9);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to top, #373B44, #73C8A9); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+h1{
+	color: black;
+}
+input{
+    color: white;
+    border-radius: 8px;
+    padding: 1%;
+    background-color: #29323c;
+}
+#tab {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#tab td, #tab th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#tab tr:nth-child(even){background-color: #f2f2f2;}
+
+#tab tr:hover {background-color: #ddd;}
+
+#tab th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}
+button {
+    background-color: #73C8A9; 
+    border: none;
+    border-radius: 12px;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+.button1 {
+    background-color: #e4e4d9; 
+    color: black; 
+    border: 2px solid #73C8A9;
+}
+
+.button1:hover {
+    background-color: #73C8A9;
+    color: black;
+}
+.navbar{
+	border-radius: 10px;
+}
+
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+.jumbotron{
+	background-color: #e4e4d9;
+}
+#jmbtn{
+	margin-top: 5%;
+}
+.main{
+	background-color: #e4e4d9;
+	border-radius: 7px;
+	padding: 1%;
+	margin-bottom: 2%;
+}
+.alignment{
+	text-align: center;
+}

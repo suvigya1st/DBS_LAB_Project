@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Home Safe Home</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="static/css/reg.css">
+</head>
+<body>
+	<div class="container" id="jmbtn">
+		<div class="jumbotron">
+			<center>
+				<h1><i class="fa fa-home" aria-hidden="true"></i> Home Safe Home</h1>
+			</center>
+			<p style="text-align: center;"><em>Real. Trusted. Secure.</em></p>
+			{% if empid  %}
+				<br><br>
+				<p style="text-align: center;"><strong>Customer ID :</strong><em>{{ empid }} </em></p>
+				
+			{% endif %}
+			{% if error  %}
+		<span style="color: red;">{{ error }} </span>
+			{% endif %}
+		</div>
+	</div>
+	<div class="container back">
+		<div class="row">
+			<div class="col-md-12">
+				<h2>Register</h2>
+				<form action="regEmp" method="post">
+					<input type="text" name="f_name" placeholder="First Name" style="width: 48%;" required>
+					<br>
+					<input type="text" name="m_name" placeholder="Middle Name" style="width: 48%;" required>
+					<br>
+					<input type="text" name="l_name" placeholder="Last Name" style="width: 48%;" required>
+					<br>
+					<input type="email" name="email_id" placeholder="Email ID" style="width: 48%;" required>
+					<br>
+					<input type="tel" name="contact" placeholder="Contact Number" style="width: 48%;" required>
+					<br>
+					<input type="text" name="building" placeholder="Building" style="width: 48%;" required>
+					<br>
+					<input type="text" name="street" placeholder="Street" style="width: 48%;" required>
+					<br>
+					<input type="text" name="city" placeholder="City" style="width: 48%;" required>
+					<br>
+					<input type="text" name="state" placeholder="State" style="width: 48%;" required>
+					<br>
+					<input type="text" name="company_name" placeholder="Company Name" style="width: 48%;" required>
+					<br>
+					<input type="text" name="company_location" placeholder="Company Location" style="width: 48%;" required>
+					<br>
+					<input type="number" name="salary" placeholder="Salary" style="width: 48%;" required>
+					<br>
+					<input type="password" name="password" placeholder="Password" style="width: 48%;" required>
+					<br>
+					<input type="Submit" name="Register" value="Register" style="width: 23%;">
+				</form>
+			</div>
+		</div>
+	</div>
+<!-- 
+<script type="text/javascript" src="login.js"></script>
+ --><script src="https://code.jquery.com/jquery-2.1.4.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</body>
+</html>

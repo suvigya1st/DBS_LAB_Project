@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Home Safe Home</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="static/css/hsh.css">
+</head>
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-nav-demo" aria-expanded="false">
+					<span class="sr-only">Toggle Navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a href="#" class="navbar-brand"><span><i class="fa fa-home" aria-hidden="true"></i></span></a>
+			</div>
+			<div class="collapse navbar-collapse" id="bs-nav-demo">
+				<div class="nav navbar-nav">
+					<li class="active"><a href="home">Home</a></li>					
+				</div>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="about"><i class="fa fa-user-circle" aria-hidden="true"></i> About Us</a></li>
+					<li><a href="contact"><i class="fa fa-comments" aria-hidden="true"></i> Contact Us</a></li>
+					<li><a href="logout"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
+				</ul>
+			</div>	
+		</div>
+	</nav>
+	<div class="container" id="jmbtn">
+		<div class="jumbotron">
+			<center>
+				<h1><i class="fa fa-home" aria-hidden="true"></i> Home Safe Home</h1>
+			</center>
+			<p style="text-align: center;"><em>Real. Trusted. Secure.</em></p>
+			<br><br>
+			{% if cusid  %}
+			<p style="text-align: center;"><strong>Customer ID : </strong><em>{{ cusid }}</em></p>
+			{% endif %}
+			{% if error  %}
+			<span style="color: red;">{{ error }} </span>
+			{% endif %}
+		</div>
+	</div>
+	<div class="container main">
+		<div class="row">
+			<div class="col-lg-12 col-sm-12" style="text-align: center;">
+				<h4>Contact</h4>
+				<form action="contactupd" method="post">
+					<input type="tel" name="contact" placeholder="Contact Number" style="width: 48%;">
+					<br>
+					<input type="Submit" name="add_contact" value="Add Contact" style="width: 23%;">
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="container main">
+		<div class="row flex">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<center><h3>We'd Love To Hear From You</h3></center>
+			</div>
+		</div>
+		<br>
+		<div class="row flex">
+			<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+				<div class="card text-center">
+  					<div class="card-body">
+    					<h4 class="card-title">Say Hello</h4>
+    					<p class="card-text">wecare@hsh.com</p>
+    					<p class="card-text">Toll Free: 1-800-276-3526</p>
+  					</div>
+				</div>
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+				<div class="card text-center">
+  					<div class="card-body">
+    					<h4 class="card-title">Connect With Us</h4>
+    					<p class="card-text"><h3><i class="fa fa-twitter" aria-hidden="true"></i>  <i class="fa fa-facebook" aria-hidden="true"></i>  <i class="fa fa-instagram" aria-hidden="true"></i>  <i class="fa fa-youtube-play" aria-hidden="true"></i></h3></p>
+  					</div>
+				</div>
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+				<div class="card text-center">
+  					<div class="card-body">
+    					<h4 class="card-title">Visit Us</h4>
+    					<p class="card-text">AB-5, MIT, Manipal,</p>
+    					<p class="card-text">Karnataka-576104</p>
+  					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+<!-- <script type="text/javascript" src=".js"></script>
+ --><script src="https://code.jquery.com/jquery-2.1.4.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</body>
+</html>

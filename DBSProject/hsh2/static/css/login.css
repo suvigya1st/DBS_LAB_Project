@@ -1,0 +1,50 @@
+body{
+background: #73C8A9;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to top, #373B44, #73C8A9);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to top, #373B44, #73C8A9); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.back{
+	margin-top: 1%;
+	margin-bottom: 20%;
+	padding: 2%;
+	text-align: center;
+	width: 40%;
+	border-radius: 10px;
+	box-shadow: 0px 4px 3px grey, 
+				 0px 8px 13px grey,
+				 0px 10px 13px grey;
+	background-color: #e4e4d9;
+}
+.jumbotron{
+	background-color: #e4e4d9;
+}
+#jmbtn{
+	margin-top: 2%;
+}
+button {
+    background-color: #73C8A9; 
+    border: none;
+    border-radius: 12px;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+.button1 {
+    background-color: #e4e4d9; 
+    color: black; 
+    border: 2px solid #73C8A9;
+}
+input{
+	color: white;
+	border-radius: 8px;
+	padding: 1%;
+	background-color: #29323c;
+}
+h1{
+	color: white;
+}
