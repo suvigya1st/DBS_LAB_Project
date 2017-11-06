@@ -36,31 +36,50 @@
 				<h1><i class="fa fa-home" aria-hidden="true"></i> Home Safe Home</h1>
 			</center>
 			<p style="text-align: center;"><em>Real. Trusted. Secure.</em></p>
+			<br><br>
 			{% if cusid  %}
-				{{ cusid }} 
+			<p style="text-align: center;"><strong>Customer ID : </strong><em>{{ cusid }}</em></p>
 			{% endif %}
 			{% if error  %}
-		<span style="color: red;">{{ error }} </span>
+			<span style="color: red;">{{ error }} </span>
 			{% endif %}
 		</div>
 	</div>
 	<div class="container main">
 		{% if del_app_li %}
-			<table cellspacing=20px>
-			<tr>
-				<th>Application Id</th>
-				<th>Application Name</th>
-				<th>Current State</th>
-			</tr>
-				{% for i in del_app_li %}		
-					<tr>
-						{% for j in i %}
-							<td>{{j}}</td>
-							<td>
-						{% endfor %}
-					</tr>
-				{% endfor %}
-			</table>
+			<div class="row">
+			<div class="col-lg-3 col-md-3 col-sm-12" style="text-align: center;">
+				<h4>ID</h4>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-12" style="text-align: center;">
+				<h4>Name</h4>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-12" style="text-align: center;">
+				<h4>State</h4>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-12" style="text-align: center;">
+				<h4>Delete</h4>
+			</div>
+		</div>
+		<form action="deleted" method="post">
+		<div class="row">
+			{% for i in del_app_li %}
+			{% for j in i %}
+			<div class="col-lg-3 col-md-3 col-sm-12" style="text-align: center;">
+				{{j}}
+			</div>
+			{% endfor %}
+			<div class="col-lg-3 col-md-3 col-sm-12" style="text-align: center;">
+				<input type="checkbox" name="del_app_li[]" value="{{i[0]}}">
+			</div>
+			{% endfor %}
+		</div>
+		<div class="row">
+			<div class="col-lg-12 col-sm-12" style="text-align: center;">
+				<input type="submit" name="Delete" value="Delete">
+			</div>
+		</div>
+		</form>
 		{% endif %}
 	</div>
 	<div class="container main">

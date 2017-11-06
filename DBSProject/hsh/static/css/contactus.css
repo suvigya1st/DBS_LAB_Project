@@ -1,0 +1,28 @@
+body{
+background: #73C8A9;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to top, #373B44, #73C8A9);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to top, #373B44, #73C8A9); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+h1{
+	color: white;
+}
+.navbar{
+	border-radius: 10px;
+}
+
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+.jumbotron{
+	background-color: #e4e4d9;
+}
+#jmbtn{
+	margin-top: 5%;
+}
+.main{
+	background-color: #e4e4d9;
+	border-radius: 7px;
+	padding: 1%;
+	margin-bottom: 2%;
+}

@@ -37,7 +37,9 @@
 			</center>
 			<p style="text-align: center;"><em>Real. Trusted. Secure.</em></p>
 			{% if cusid  %}
-				{{ cusid }} 
+				<br><br>
+				<p style="text-align: center;"><strong>Customer ID :</strong><em>{{ cusid }} </em></p>
+				
 			{% endif %}
 			{% if error  %}
 		<span style="color: red;">{{ error }} </span>
@@ -58,7 +60,7 @@
 				<a href="ctrl_app"><button class="button1" type="button" value="Personal Information">Control Appliance</button></a> 
 			</div>
 			<div class="col-lg-6 col-md-6 col-sm-12 alignment">
-				<a href="rep_app"><button class="button1" type="button" value="Electricity Consumption">Appliance Report</button></a> 
+				<a href="status_app"><button class="button1" type="button" value="Electricity Consumption">Appliance Status</button></a> 
 			</div>
 		</div>
 	</div>

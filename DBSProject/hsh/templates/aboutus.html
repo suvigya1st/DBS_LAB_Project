@@ -4,7 +4,7 @@
 	<title>Home Safe Home</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="static/css/hsh.css">
+	<link rel="stylesheet" type="text/css" href="static/css/aboutus.css">
 </head>
 <body>
 	<nav class="navbar navbar-default navbar-fixed-top">
@@ -25,7 +25,7 @@
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="about"><i class="fa fa-user-circle" aria-hidden="true"></i> About Us</a></li>
 					<li><a href="contact"><i class="fa fa-comments" aria-hidden="true"></i> Contact Us</a></li>
-					<li><a href="logout"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
+					<li><a href="login"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
 				</ul>
 			</div>	
 		</div>
@@ -36,31 +36,17 @@
 				<h1><i class="fa fa-home" aria-hidden="true"></i> Home Safe Home</h1>
 			</center>
 			<p style="text-align: center;"><em>Real. Trusted. Secure.</em></p>
-			{% if cusid  %}
-				<br><br>
-				<p style="text-align: center;"><strong>Customer ID :</strong><em>{{ cusid }} </em></p>
-				
-			{% endif %}
-			{% if error  %}
-		<span style="color: red;">{{ error }} </span>
-			{% endif %}
 		</div>
 	</div>
-	<div class="container main">
-		<div class="row" >
-			<div class="col-lg-6 col-md-6 col-sm-12 alignment">
-				<a href="appliance"><button class="button1" type="button" value="Appliances">Appliances</button></a> 
-			</div>
-			<div class="col-lg-6 col-md-6 col-sm-12 alignment">
-				<a href="comp"><button class="button1" type="button" value="Complaint">Complaint</button></a> 
-			</div>
-		</div>
-		<div class="row" >
-			<div class="col-lg-6 col-md-6 col-sm-12 alignment">
-				<a href="perinfo"><button class="button1" type="button" value="Personal Information">Personal Information</button></a> 
-			</div>
-			<div class="col-lg-6 col-md-6 col-sm-12 alignment">
-				<a href="elec"><button class="button1" type="button" value="Electricity Consumption">Electricity Consumption</button></a> 
+	<div class="container">
+		<div class="row main">
+			<div class="col-md-sm">
+				<center>
+					<p class="text">With Home Safe Home, we intend to add value to your efforts of maintaining a safe and secure environment, by acting as the virtual security guard, aimed at protecting your property at all times.</p>
+					<p class="text"><strong>We're on a mission.</strong></p>
+					<p class="text">Everyone has a right to feel safe and secure, and security comes from having the information you want when you want it. It’s the guiding principle behind our work, and reinforces our belief that the best technology makes you smarter, puts you in control, and gives you access to the information you need. That’s why we’re dedicated to developing easy-to-use technology that protects, empowers, and has a meaningful impact on people, families, and their communities.</p>
+					<p class="text">We want to make the world a safer place by giving people the information they need to make smart decisions when something is wrong, and helping them feel connected when everything is right.</p>
+				</center>
 			</div>
 		</div>
 	</div>
@@ -100,9 +86,7 @@
 			</div>
 		</div>
 	</div>
-	
-<!-- <script type="text/javascript" src=".js"></script>
- --><script src="https://code.jquery.com/jquery-2.1.4.js"></script>
+<script src="https://code.jquery.com/jquery-2.1.4.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </body>
 </html>

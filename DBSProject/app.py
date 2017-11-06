@@ -75,7 +75,7 @@ def login_test():
 					session['cusid'] = userkey
 					print "loggedin" 
 					print session['cusid']
-					return render_template("index.html")
+					return render_template("index.html",cusid = userkey)
 				else:
 					error = "Wrong Password"
 					print error
@@ -90,7 +90,7 @@ def login_test():
 
 @app.route("/index")
 def index():
-	return render_template("index.html")
+	return render_template("index.html",cusid=session['cusid'])
 
 @app.route("/home")
 def home():
@@ -116,9 +116,9 @@ def added():
 				print session.get('cusid')
 				cur.execute("INSERT INTO Appliance(cus_id,appliance_name,warranty_start_date, warranty_duration, current_state) VALUES (%s,%s,%s,%s,%s)",(session.get("cusid"),aname, wdate,wduration,currentstate))
 				db.commit()
-				return render_template('appliances.html')
+				return render_template('appliances.html', error="Added")
 			except Exception as e:
-				return render_template('addappliance.html', error = "Query could not be run.")
+				return render_template('addappliance.html', error = e)
 		except Exception as e:
 			print e
 			return "Could not connect to database"
@@ -135,14 +135,37 @@ def del_app():
 		cur = db.cursor()
 		cur.execute("SELECT appliance_id, appliance_name, current_state FROM Appliance WHERE cus_id = %s" % session.get("cusid"))
 		appl_li = cur.fetchall()
+		print "IN DELETE APPLIANCE"
 		print appl_li
-		print type(appl_li)
 		return render_template("delappliance.html",cusid=session['cusid'],del_app_li = appl_li)
 	except Exception as e:
 		print e
 		return render_template('appliances.html', error = e)
 	
+@app.route("/deleted", methods=['POST'])
+def deleted():
+	try:
+		cur = db.cursor()
+		cur.execute("SELECT appliance_id, appliance_name, current_state FROM Appliance WHERE cus_id = %s" % session.get("cusid"))
 
+		appl_li = cur.fetchall()
+		print "IN DELETED APPLIANCE"
+		print appl_li
+		del_app_li =  request.form.getlist("del_app_li[]")
+		for i in range(len(del_app_li)):
+			del_app_li[i] = int(del_app_li[i])
+		print del_app_li
+		for i in del_app_li:
+			cur.execute("DELETE FROM Appliance WHERE cus_id = %s and appliance_id = %s" %(session['cusid'],i))
+		db.commit()
+		cur.execute("SELECT appliance_id, appliance_name, current_state FROM Appliance WHERE cus_id = %s" % session.get("cusid"))
+		appl_li = cur.fetchall()
+		print appl_li
+
+		return render_template('appliances.html',cusid=session['cusid'] , error ="Deleted")
+	except Exception as e:
+		print e
+		return render_template('index.html',cusid=session['cusid'], error = e)
 
 @app.route("/ctrl_app")
 def ctrl_app():
@@ -151,40 +174,202 @@ def ctrl_app():
 		cur.execute("SELECT appliance_id, appliance_name, current_state FROM Appliance WHERE cus_id = %s" % session.get("cusid"))
 		appl_li = cur.fetchall()
 		print appl_li
-		print type(appl_li)
 		return render_template("ctrlappliance.html",cusid=session['cusid'],del_app_li = appl_li)
 	except Exception as e:
 		print e
 		return render_template('appliances.html', error = e)
 
-@app.route("/rep_app")
-def rep_app():
-	return render_template("repappliance.html")
+@app.route("/controled", methods=['POST'])
+def controled():
+	try:
+		cur = db.cursor()
+		new_app_li = request.form.getlist("ctrl_app_li[]")
+		cur.execute("SELECT appliance_id, appliance_name, current_state FROM Appliance WHERE cus_id = %s" % session.get("cusid"))
+		prev_app_li = cur.fetchall()
+		print "ORIGINAL"
+		print prev_app_li
+		print "MODIFIED"
+		for i in range(len(new_app_li)):
+			new_app_li[i] = int(new_app_li[i])
+		appl_li = {int(i[0]):i[2] for i in prev_app_li}
+		for i in appl_li.keys():
+			if (i in new_app_li) and (appl_li[i]=='off'):
+				# UPDATE
+				cur.execute("UPDATE Appliance SET current_state = %s WHERE appliance_id = %s" ,('on',i))
+			elif (i not in new_app_li) and (appl_li[i]=='on'):
+				#Update
+				cur.execute("UPDATE Appliance SET current_state = %s WHERE appliance_id = %s" ,('off',i))
+		db.commit()
+
+		cur.execute("SELECT appliance_id, appliance_name, current_state FROM Appliance WHERE cus_id = %s" % session.get("cusid"))
+		appl_li = cur.fetchall()
+		print appl_li
+		return render_template('appliances.html',cusid=session['cusid'],error="Controlled")
+	except Exception as e:
+		print e
+		return render_template('appliances.html',cusid = session['cusid'],error=e)
+
+@app.route("/status_app")
+def status_app():
+	try:
+		cur = db.cursor()
+		cur.execute("SELECT appliance_id, appliance_name, current_state FROM Appliance WHERE cus_id = %s" % session.get("cusid"))
+		appl_li = cur.fetchall()
+		print appl_li
+		return render_template("statusappliance.html",cusid=session['cusid'],status_app_li = appl_li)
+	except Exception as e:
+		print e
+		return render_template('appliances.html', error = e)
 
 @app.route("/logout")
 def logout():
 	session.pop("cusid",None)
 	return redirect("/")
 
-# @app.route("/elec")
-# def elec():
-# 	return render_template("electricity.html")
 
-# @app.route("/perinfo")
-# def perinfo():
-# 	return render_template("personalinfo.html")
+
+@app.route("/perinfo")
+def perinfo():
+	return render_template("personalinfo.html",cusid=session['cusid'])
+
+@app.route("/name")
+def name():
+	return render_template("nameupdate.html",cusid=session['cusid'])
+
+@app.route("/nameupd", methods=['POST'])
+def nameupd():
+	try:
+		fname = request.form["f_name"]
+		mname = request.form["m_name"]
+		lname = request.form["l_name"]
+		cusid = session['cusid']
+		cur = db.cursor()
+		cur.execute("SELECT cus_name_id FROM Customer WHERE cus_id = %s" %cusid)
+		db.commit()
+		nameid = int(cur.fetchone()[0])
+		if fname != "":
+			cur.execute("UPDATE Name SET first_name = %s WHERE name_id = %s",(fname,nameid))
+			db.commit()
+		if mname != "":
+			cur.execute("UPDATE Name SET middle_name = %s WHERE name_id = %s",(mname,nameid))
+			db.commit()
+		if lname != "":
+			cur.execute("UPDATE Name SET last_name = %s WHERE name_id = %s",(lname,nameid))
+			db.commit()
+		return render_template('personalinfo.html',cusid = session['cusid'],error="Updated")
+	except Exception as e:
+		print e
+		return render_template('index.html',cusid=session['cusid'],error=e)
+
+@app.route("/address")
+def address():
+	return render_template("addressupdate.html",cusid=session['cusid'])
+
+@app.route("/addressupd", methods=['POST'])
+def addressupd():
+	try:
+		building = request.form["building"]
+		street = request.form["street"]
+		city = request.form["city"]
+		state = request.form["state"]
+		cusid = session['cusid']
+		cur = db.cursor()
+		cur.execute("SELECT addr_id FROM Customer WHERE cus_id = %s" %cusid)
+		db.commit()
+		addrid = int(cur.fetchone()[0])
+		if building != "":
+			cur.execute("UPDATE Address SET building_name = %s WHERE addr_id = %s",(building,addrid))
+			db.commit()
+		if street != "":
+			cur.execute("UPDATE Address SET street_name = %s WHERE addr_id = %s",(street,addrid))
+			db.commit()
+		if city != "":
+			cur.execute("UPDATE Address SET city = %s WHERE addr_id = %s",(city,addrid))
+			db.commit()
+		if state != "":
+			cur.execute("UPDATE Address SET state = %s WHERE addr_id = %s",(state,addrid))
+			db.commit()
+		return render_template('personalinfo.html',cusid = session['cusid'],error="Updated")
+	except Exception as e:
+		print e
+		return render_template('index.html',cusid=session['cusid'],error=e)
+
+
+@app.route("/cont")
+def cont():
+	return render_template("contactupdate.html",cusid=session['cusid'])
+
+@app.route("/contactupd", methods=['POST'])
+def contactupd():
+	try:
+		cont = int(request.form["contact"])
+		cusid = session['cusid']
+		cur = db.cursor()
+		if cont != "":
+			cur.execute("INSERT INTO Customer_contact(cus_id,cus_contact_no) VALUES(%s,%s)",(cusid,cont))
+			db.commit()
+		return render_template('personalinfo.html',cusid = session['cusid'],error="Updated")
+	except Exception as e:
+		print e
+		return render_template('index.html',cusid=session['cusid'],error=e)
+
+
+@app.route("/email")
+def email():
+	return render_template("emailupdate.html",cusid=session['cusid'])
+
+@app.route("/emailupd", methods=['POST'])
+def emailupd():
+	try:
+		mail = request.form["email_id"]
+		cusid = session['cusid']
+		cur = db.cursor()
+		if mail != "":
+			cur.execute("UPDATE Customer SET cus_email_id = %s WHERE cus_id = %s",(mail,cusid))
+			db.commit()
+		return render_template('personalinfo.html',cusid = session['cusid'],error="Updated")
+	except Exception as e:
+		print e
+		return render_template('index.html',cusid=session['cusid'],error=e)
+
+@app.route("/password")
+def password():
+	return render_template("passwordchange.html",cusid=session['cusid'])
+
+@app.route("/passupd", methods=['POST'])
+def passupd():
+	try:
+		oldpassword = request.form["old_password"]
+		newpassword = request.form["new_password"]
+		cusid = session['cusid']
+		cur = db.cursor()
+		cur.execute("SELECT password FROM Customer WHERE cus_id = %s" %cusid)
+		db.commit()
+		passkey = cur.fetchone()[0]
+		if passkey == oldpassword :
+			cur.execute("UPDATE Customer SET password = %s WHERE cus_id = %s",(newpassword,cusid))
+			db.commit()
+			return render_template('personalinfo.html',cusid = session['cusid'],error="Updated")
+		else:
+			return render_template('personalinfo.html',cusid=session['cusid'],error="Password didnot Match")
+	except Exception as e:
+		print e
+		return render_template('index.html',cusid=session['cusid'],error=e)
+
+
+
 
 @app.route("/comp")
 def comp():
-	return render_template("complaint.html")
+	return render_template("complaint.html",cusid=session['cusid'])
 
 @app.route("/about")
 def about():
-	return render_template("aboutus.html")
+	return render_template("aboutus.html",cusid=session['cusid'])
 
 @app.route("/contact")
 def contact():
-	return render_template("contactus.html")
+	return render_template("contactus.html",cusid=session['cusid'])
 
 
 if __name__ == '__main__':
