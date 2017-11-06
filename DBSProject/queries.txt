@@ -107,3 +107,39 @@ emp_id int,
 primary key(complaint_no,emp_id),
 foreign key(complaint_no) references Complaint(complaint_no),
 foreign key(emp_id) references Employee(emp_id));
+
+	
+DELIMITER $$
+CREATE TRIGGER Appliance_added
+AFTER INSERT ON Appliance
+FOR EACH ROW 
+BEGIN
+	IF NEW.current_state = 'on'
+	THEN INSERT INTO Activity(appliance_id, switch_on_time) VALUES (NEW.appliance_id,NOW());
+	END IF;
+END;$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER Appliance_deleted
+BEFORE DELETE ON Appliance
+FOR EACH ROW
+BEGIN
+DELETE FROM Activity WHERE appliance_id=OLD.appliance_id;
+END;$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER Appliance_controlled
+BEFORE UPDATE ON Appliance
+FOR EACH ROW
+BEGIN
+IF NEW.current_state = 'on' 
+THEN
+INSERT INTO Activity(appliance_id,switch_on_time) VALUES(NEW.appliance_id,NOW());
+ELSEIF NEW.current_state = 'off'
+THEN
+UPDATE Activity SET switch_off_time = NOW() WHERE appliance_id = NEW.appliance_id;
+END IF;
+END;$$
+DELIMITER ;

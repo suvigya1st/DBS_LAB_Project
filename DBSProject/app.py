@@ -15,6 +15,7 @@ db = MySQLdb.connect("localhost","root","password","hsh2" )
 def register():
 	return render_template('register.html')
 
+
 @app.route("/reg",methods=['GET','POST'])
 def reg():
 	if not session.get('cusid'):	
@@ -46,8 +47,9 @@ def reg():
 		# cur.execute("SELECT cus_id FROM Customer where cus_name_id = %s and addr_id = %s",(nameid,addrid))
 		# cusid=int(cur.fetchone()[0])
 		cur.execute("INSERT INTO Customer_contact VALUES (%s,%s)",(cusid,cont))
+		db.commit()
 		print cusid
-		return render_template('login.html',cusid = session['cusid'])
+		return render_template('login.html',cusid = cusid)
 	else:
 		return redirect("/index")
 
@@ -194,10 +196,11 @@ def controled():
 		appl_li = {int(i[0]):i[2] for i in prev_app_li}
 		for i in appl_li.keys():
 			if (i in new_app_li) and (appl_li[i]=='off'):
-				# UPDATE
+				# UPDATE that application current_state to 'on'
 				cur.execute("UPDATE Appliance SET current_state = %s WHERE appliance_id = %s" ,('on',i))
 			elif (i not in new_app_li) and (appl_li[i]=='on'):
-				#Update
+				#UPDATE that application current_state to 'off'
+
 				cur.execute("UPDATE Appliance SET current_state = %s WHERE appliance_id = %s" ,('off',i))
 		db.commit()
 
@@ -357,11 +360,73 @@ def passupd():
 		return render_template('index.html',cusid=session['cusid'],error=e)
 
 
+@app.route("/active_comp")
+def active_comp():
+	try:
+		cur = db.cursor()
+		print 1
+		cur.execute("SELECT complaint_no, launch_date, current_state FROM Complaint WHERE cus_id = %s" % session.get("cusid"))
+		print 2
+		comp_li = cur.fetchall()
+		print 3
+		print comp_li
+		print 4
+		db.commit()
+		return render_template("activecomplaint.html",cusid=session['cusid'],active_comp_li = comp_li)
+	except Exception as e:
+		print e
+		return render_template('index.html',cusid=session['cusid'],error=e)
 
+
+@app.route("/activecomplained")
+def active_complained():
+	if session.get("cusid"):
+		return render_template("complaints.html",cusid=session['cusid'])
+	else:
+		return redirect("/login")
 
 @app.route("/comp")
 def comp():
-	return render_template("complaint.html",cusid=session['cusid'])
+	try:
+		return render_template("complaints.html",cusid=session['cusid'])
+	except Exception as e:
+		print e
+		return render_template('index.html',cusid=session['cusid'], error = e)
+
+@app.route("/launch_comp")
+def launch_comp():
+	try:
+		cur = db.cursor()
+		cur.execute("SELECT appliance_id, appliance_name FROM Appliance WHERE cus_id = %s" % session.get("cusid"))
+		appl_li = cur.fetchall()
+		return render_template("launchcomplaint.html",cusid=session['cusid'],app_exist = appl_li)
+	except Exception as e:
+		return render_template('index.html',cusid=session['cusid'], error = e)
+
+
+@app.route("/complained", methods=['POST'])
+def complained():
+	try:
+		cur = db.cursor()
+		new_comp_li = request.form.getlist("comp_li[]")
+		new_comp_li = [int(i) for i in new_comp_li]
+		ini_comp_desc_li = request.form.getlist("comp_desc_li[]")
+		ini_comp_desc_li[:] = [item for item in ini_comp_desc_li if item != ""]
+		comp_desc_li = {int(new_comp_li[i]):ini_comp_desc_li[i] for i in range(len(new_comp_li))}
+		# cur.execute("SELECT appliance_id, appliance_name, current_state FROM Appliance WHERE cus_id = %s" % session.get("cusid"))
+		# prev_comp_li = cur.fetchall()
+		# print "ORIGINAL"
+		# print prev_comp_li
+		cur.execute("INSERT INTO Complaint(cus_id,launch_date,current_state) VALUES (%s,CURDATE(),%s)",(session.get("cusid"), 'active'))
+		compid = cur.lastrowid
+		print compid
+		for i in comp_desc_li.keys():
+			cur.execute("INSERT INTO ComplaintDetail(complaint_no,appliance_id,description)VALUES(%s,%s,%s)",(compid,i,comp_desc_li[i]))
+		db.commit()
+		return render_template('complaints.html',cusid = session['cusid'],error = "Complaint Launched")
+	except Exception as e:
+		print e
+		return render_template('index.html',cusid=session['cusid'],error=e)
 
 @app.route("/about")
 def about():
