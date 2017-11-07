@@ -76,9 +76,9 @@
 
 				<div class="col-lg-4 col-md-4 col-sm-12" style="text-align: center;">
 					{% if i[-1]=="active" %}
-						<input type="checkbox" name="ctrl_app_li[]" value="{{i[0]}}" checked disabled>
-					{% else %}
 						<input type="checkbox" name="ctrl_app_li[]" value="{{i[0]}}" disabled>
+					{% else %}
+						<input type="checkbox" name="ctrl_app_li[]" value="{{i[0]}}" checked disabled>
 					{% endif %}
 				</div>
 			{% endfor %}

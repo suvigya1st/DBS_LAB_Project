@@ -20,11 +20,11 @@
 			</div>
 			<div class="collapse navbar-collapse" id="bs-nav-demo">
 				<div class="nav navbar-nav">
-					<li class="active"><a href="homeEmp">Home</a></li>					
+					<li class="active"><a href="home">Home</a></li>					
 				</div>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="homeEmp"><i class="fa fa-user-circle" aria-hidden="true"></i> About Us</a></li>
-					<li><a href="homeEmp"><i class="fa fa-comments" aria-hidden="true"></i> Contact Us</a></li>
+					<li><a href="about"><i class="fa fa-user-circle" aria-hidden="true"></i> About Us</a></li>
+					<li><a href="contact"><i class="fa fa-comments" aria-hidden="true"></i> Contact Us</a></li>
 					<li><a href="logout"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
 				</ul>
 			</div>	
@@ -36,25 +36,32 @@
 				<h1><i class="fa fa-home" aria-hidden="true"></i> Home Safe Home</h1>
 			</center>
 			<p style="text-align: center;"><em>Real. Trusted. Secure.</em></p>
-			{% if empid  %}
-				<br><br>
-				<p style="text-align: center;"><strong>Employee ID :</strong><em>{{ empid }} </em></p>
-				
+			<br><br>
+			{% if cusid  %}
+			<p style="text-align: center;"><strong>Customer ID : </strong><em>{{ cusid }}</em></p>
 			{% endif %}
 			{% if error  %}
-		<span style="color: red;">{{ error }} </span>
+			<span style="color: red;">{{ error }} </span>
 			{% endif %}
 		</div>
 	</div>
 	<div class="container main">
-		<div class="row" >
-			<div class="col-lg-6 col-md-6 col-sm-12 alignment">
-				<a href="perinfoemp"><button class="button1" type="button" value="Personal Information">Personal Information</button></a>
-			</div>
-			<div class="col-lg-6 col-md-6 col-sm-12 alignment">
-				<a href="compemp"><button class="button1" type="button" value="Complaint">Complaints</button></a> 
+		{% if viewname %}
+			<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12" style="text-align: center;">
+				<h3>Name</h3>
 			</div>
 		</div>
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12" style="text-align: center;">
+			<h4>{% for i in viewname %}
+			{% for j in i %}
+				{{j}}
+			{% endfor %}
+			{% endfor %}</h4>
+			</div>
+		</div>
+		{% endif %}
 	</div>
 	<div class="container main">
 		<div class="row flex">
@@ -93,7 +100,8 @@
 		</div>
 	</div>
 	
-<script src="https://code.jquery.com/jquery-2.1.4.js"></script>
+<!-- <script type="text/javascript" src=".js"></script>
+ --><script src="https://code.jquery.com/jquery-2.1.4.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </body>
 </html>

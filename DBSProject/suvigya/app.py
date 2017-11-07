@@ -6,7 +6,7 @@ import socket
 app = Flask(__name__)
 app.secret_key = "aw456787uioSHUI4w5eQuighepuihqetoghRUIGHQEOh"
 
-db = MySQLdb.connect("localhost","root","password","hsh2" )
+db = MySQLdb.connect("localhost","root","aish1234","hsh" )
 
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -304,6 +304,72 @@ def logout():
 def perinfo():
 	return render_template("personalinfo.html",cusid=session['cusid'])
 
+@app.route("/view")
+def view():
+	return render_template("viewinfo.html",cusid=session['cusid'])
+
+@app.route("/updt")
+def updt():
+	return render_template("updateinfo.html",cusid=session['cusid'])
+
+@app.route("/view_name")
+def view_name():
+	try:
+		cur = db.cursor()
+		cur.execute("SELECT cus_name_id FROM Customer WHERE cus_id = %s" %session.get("cusid"))
+		db.commit()
+		nameid = cur.fetchone()[0]
+		cur.execute("SELECT first_name,middle_name,last_name FROM Name WHERE name_id = %s" %nameid)
+		db.commit()
+		name = cur.fetchall()
+		return render_template("view_name.html",cusid=session['cusid'],viewname = name)
+	except Exception as e:
+		print e
+		return render_template('viewinfo.html', error = e)
+
+
+@app.route("/view_address")
+def view_address():
+	try:
+		cur = db.cursor()
+		cur.execute("SELECT addr_id FROM Customer WHERE cus_id = %s" %session.get("cusid"))
+		db.commit()
+		addrid = cur.fetchone()[0]
+		cur.execute("SELECT building_name,street_name,city,state FROM Address WHERE addr_id = %s" %addrid)
+		db.commit()
+		address = cur.fetchall()
+		return render_template("view_address.html",cusid=session['cusid'],viewaddress = address)
+	except Exception as e:
+		print e
+		return render_template('viewinfo.html', error = e)
+
+
+@app.route("/view_contact")
+def view_contact():
+	try:
+		cur = db.cursor()
+		cur.execute("SELECT cus_contact_no FROM Customer_contact WHERE cus_id = %s" %session.get("cusid"))
+		db.commit()
+		contact = cur.fetchall()
+		return render_template("view_contact.html",cusid=session['cusid'],viewcontact = contact)
+	except Exception as e:
+		print e
+		return render_template('viewinfo.html', error = e)
+
+
+@app.route("/view_email")
+def view_email():
+	try:
+		cur = db.cursor()
+		cur.execute("SELECT cus_email_id FROM Customer WHERE cus_id = %s" %session.get("cusid"))
+		db.commit()
+		email = cur.fetchall()
+		return render_template("view_email.html",cusid=session['cusid'],viewemail = email)
+	except Exception as e:
+		print e
+		return render_template('viewinfo.html', error = e)
+
+
 @app.route("/name")
 def name():
 	return render_template("nameupdate.html",cusid=session['cusid'])
@@ -504,56 +570,19 @@ def compemp():
 		cur = db.cursor()
 		cur.execute("SELECT complaint_no FROM ComplaintAssigned WHERE emp_id = %s" %session.get("empid"))
 		db.commit()
-		comp_li = cur.fetchall()
-		print comp_li
-		return render_template("complaintEmp.html",empid=session['empid'],comp_li = comp_li)
+		appl_li = cur.fetchall()
+		return render_template("complaintEmp.html",empid=session['empid'],app_exist = appl_li)
 	except Exception as e:
-		return render_template('indexEmp.html',empid=session['empid'],error =e)
+		return render_template('indexEmp.html',empid=session['empid'])
 
-@app.route("/compdetail", methods=['POST','GET'])
+@app.route("/compdetail")
 def compdetail():
-	# try:
-		cur = db.cursor()
-		comp_no = request.form['radio_selected']
-		print comp_no
-		if comp_no:
-			cur.execute("SELECT cus_id,launch_date,current_state,appliance_id, description FROM Complaint natural join ComplaintDetail WHERE complaint_no = %s",(comp_no))
-			comp_det = list(cur.fetchall()[0])
-			cus_id = int(comp_det[0])
-			comp_det[0] = comp_no
-			comp_det = tuple(comp_det)
-			print comp_det
-			cur.execute("SELECT first_name,middle_name,last_name,cus_email_id,addr_id FROM Customer, Name WHERE cus_id = %s and Customer.cus_name_id = Name.name_id" % cus_id)
-			cus_det = list(cur.fetchall())
-			cus_det = list(cus_det[0])
-			cus_name = cus_det[0]+' '+cus_det[1]+' '+cus_det[2]
-			cus_det = cus_det[3:]
-			cus_det.insert(0,cus_name)
-			cur.execute("SELECT building_name, street_name,city,state FROM Address WHERE addr_id = %s" % cus_det[-1])
-			cus_addr_det = list(cur.fetchall()[0])
-			cus_addr_det = " ".join(cus_addr_det)
-			cus_det[-1] = cus_addr_det
-			cus_det = tuple(cus_det)
-			print cus_det
-			cur.execute("SELECT cus_contact_no FROM Customer_contact WHERE cus_id = %s" % cus_id)
-			cus_contacts = tuple(list(cur.fetchall()[0]))
-			print cus_contacts
-		return render_template('compDetails.html',empid=session['empid'],comp_det = comp_det, cus_det = cus_det, cus_contacts = cus_contacts)
-	# except Exception as e:
-	#  	return render_template('indexEmp.html',empid=session['empid'] ,error =e)
+	try:
+		compdetail = request.form[""]
+		return render_template('compDetails.html',empid=seesion['empid'])
+	except:
+		return render_template('complaintEmp.html',empid=session['empid'])
 
-@app.route("/resolved", methods=['POST'])
-def resolved():
-		try:
-			cur = db.cursor()
-			print 1
-			comp_no = request.form['complaint_no']
-			print comp_no
-			cur.execute("UPDATE Complaint SET current_state = 'inactive' WHERE complaint_no = %s" %(comp_no))			
-			db.commit()
-			return render_template("indexEmp.html", empid = session['empid'], error = "Complaint resolved")
-		except Exception as e:
-			return render_template("indexEmp.html",empid=session['empid'] ,error =e)
 
 @app.route("/about")
 def about():
@@ -562,6 +591,14 @@ def about():
 @app.route("/contact")
 def contact():
 	return render_template("contactus.html",cusid=session['cusid'])
+
+@app.route("/aboutEmp")
+def aboutEmp():
+	return render_template("aboutusEmp.html",empid=session['empid'])
+
+@app.route("/contactEmp")
+def contactEmp():
+	return render_template("contactusEmp.html",empid=session['empid'])
 
 
 if __name__ == '__main__':
