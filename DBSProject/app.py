@@ -1,7 +1,7 @@
 from flask import Flask,render_template,session,request,jsonify,json,redirect,url_for
 from hashlib import md5
 import MySQLdb
-import socket
+import requests
 
 app = Flask(__name__)
 app.secret_key = "aw456787uioSHUI4w5eQuighepuihqetoghRUIGHQEOh"
@@ -9,9 +9,6 @@ app.secret_key = "aw456787uioSHUI4w5eQuighepuihqetoghRUIGHQEOh"
 db = MySQLdb.connect("localhost","root","password","hsh2" )
 
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-nodemcuHost='127.0.0.2'
-nodemcuPort=8080
 
 # def connectNode():
 # 	s.connect((nodemcuHost,nodemcuPort))
@@ -250,8 +247,12 @@ def ctrl_app():
 		print e
 		return render_template('appliances.html', error = e)
 
+
+serverIP = 'http://192.168.43.137/gpio/2/'
+
 @app.route("/controled", methods=['POST'])
 def controled():
+	global serverIP
 	try:
 		cur = db.cursor()
 		new_app_li = request.form.getlist("ctrl_app_li[]")
@@ -267,10 +268,12 @@ def controled():
 			if (i in new_app_li) and (appl_li[i]=='off'):
 				# UPDATE that application current_state to 'on'
 				cur.execute("UPDATE Appliance SET current_state = %s WHERE appliance_id = %s" ,('on',i))
+				requests.get(serverIP+'on')
 			elif (i not in new_app_li) and (appl_li[i]=='on'):
 				#UPDATE that application current_state to 'off'
 
 				cur.execute("UPDATE Appliance SET current_state = %s WHERE appliance_id = %s" ,('off',i))
+				requests.get(serverIP+'off')
 		db.commit()
 
 		cur.execute("SELECT appliance_id, appliance_name, current_state FROM Appliance WHERE cus_id = %s" % session.get("cusid"))
@@ -303,6 +306,139 @@ def logout():
 @app.route("/perinfo")
 def perinfo():
 	return render_template("personalinfo.html",cusid=session['cusid'])
+
+@app.route("/perinfoEmp")
+def perinfoEmp():
+	return render_template("personalinfoEmp.html",empid=session['empid'])
+
+
+@app.route("/view")
+def view():
+	return render_template("viewinfo.html",cusid=session['cusid'])
+
+@app.route("/viewEmp")
+def viewEmp():
+	return render_template("viewinfoEmp.html",empid=session['empid'])
+
+
+@app.route("/updt")
+def updt():
+	return render_template("updateinfo.html",cusid=session['cusid'])
+
+@app.route("/view_name")
+def view_name():
+	try:
+		cur = db.cursor()
+		cur.execute("SELECT cus_name_id FROM Customer WHERE cus_id = %s" %session.get("cusid"))
+		db.commit()
+		nameid = cur.fetchone()[0]
+		cur.execute("SELECT first_name,middle_name,last_name FROM Name WHERE name_id = %s" %nameid)
+		db.commit()
+		name = cur.fetchall()
+		return render_template("view_name.html",cusid=session['cusid'],viewname = name)
+	except Exception as e:
+		print e
+		return render_template('viewinfo.html', error = e)
+
+@app.route("/view_name_emp")
+def view_name_emp():
+	try:
+		cur = db.cursor()
+		cur.execute("SELECT emp_name_id FROM Employee WHERE emp_id = %s" %session.get("empid"))
+		db.commit()
+		nameid = cur.fetchone()[0]
+		cur.execute("SELECT first_name,middle_name,last_name FROM Name WHERE name_id = %s" %nameid)
+		db.commit()
+		name = cur.fetchall()
+		return render_template("view_name_emp.html",empid=session['empid'],viewname = name)
+	except Exception as e:
+		print e
+		return render_template('viewinfoEmp.html', error = e)
+
+
+@app.route("/view_address")
+def view_address():
+	try:
+		cur = db.cursor()
+		cur.execute("SELECT addr_id FROM Customer WHERE cus_id = %s" %session.get("cusid"))
+		db.commit()
+		addrid = cur.fetchone()[0]
+		cur.execute("SELECT building_name,street_name,city,state FROM Address WHERE addr_id = %s" %addrid)
+		db.commit()
+		address = cur.fetchall()
+		return render_template("view_address.html",cusid=session['cusid'],viewaddress = address)
+	except Exception as e:
+		print e
+		return render_template('viewinfo.html', error = e)
+
+
+@app.route("/view_address_emp")
+def view_address_emp():
+	try:
+		cur = db.cursor()
+		cur.execute("SELECT addr_id FROM Employee WHERE emp_id = %s" %session.get("empid"))
+		db.commit()
+		addrid = cur.fetchone()[0]
+		cur.execute("SELECT building_name,street_name,city,state FROM Address WHERE addr_id = %s" %addrid)
+		db.commit()
+		address = cur.fetchall()
+		return render_template("view_address_emp.html",empid=session['empid'],viewaddress = address)
+	except Exception as e:
+		print e
+		return render_template('viewinfoEmp.html', error = e)
+
+
+@app.route("/view_contact")
+def view_contact():
+	try:
+		cur = db.cursor()
+		cur.execute("SELECT cus_contact_no FROM Customer_contact WHERE cus_id = %s" %session.get("cusid"))
+		db.commit()
+		contact = cur.fetchall()
+		return render_template("view_contact.html",cusid=session['cusid'],viewcontact = contact)
+	except Exception as e:
+		print e
+		return render_template('viewinfo.html', error = e)
+
+
+@app.route("/view_contact_emp")
+def view_contact_emp():
+	try:
+		cur = db.cursor()
+		cur.execute("SELECT emp_contact_no FROM Employee_contact WHERE emp_id = %s" %session.get("empid"))
+		db.commit()
+		contact = cur.fetchall()
+		return render_template("view_contact_emp.html",empid=session['empid'],viewcontact = contact)
+	except Exception as e:
+		print e
+		return render_template('viewinfoEmp.html', error = e)
+
+
+@app.route("/view_email")
+def view_email():
+	try:
+		cur = db.cursor()
+		cur.execute("SELECT cus_email_id FROM Customer WHERE cus_id = %s" %session.get("cusid"))
+		db.commit()
+		email = cur.fetchall()
+		return render_template("view_email.html",cusid=session['cusid'],viewemail = email)
+	except Exception as e:
+		print e
+		return render_template('viewinfo.html', error = e)
+
+
+@app.route("/view_email_emp")
+def view_email_emp():
+	try:
+		cur = db.cursor()
+		cur.execute("SELECT emp_email FROM Employee WHERE emp_id = %s" %session.get("empid"))
+		db.commit()
+		email = cur.fetchall()
+		return render_template("view_email_emp.html",empid=session['empid'],viewemail = email)
+	except Exception as e:
+		print e
+		return render_template('viewinfoEmp.html', error = e)
+
 
 @app.route("/name")
 def name():
@@ -512,12 +648,12 @@ def compemp():
 
 @app.route("/compdetail", methods=['POST','GET'])
 def compdetail():
-	# try:
+	try:
 		cur = db.cursor()
 		comp_no = request.form['radio_selected']
 		print comp_no
 		if comp_no:
-			cur.execute("SELECT cus_id,launch_date,current_state,appliance_id, description FROM Complaint natural join ComplaintDetail WHERE complaint_no = %s",(comp_no))
+			cur.execute("SELECT cus_id,launch_date,current_state,appliance_id, description FROM Complaint natural join ComplaintDetail WHERE complaint_no = %s"% comp_no)
 			comp_det = list(cur.fetchall()[0])
 			cus_id = int(comp_det[0])
 			comp_det[0] = comp_no
@@ -539,8 +675,10 @@ def compdetail():
 			cus_contacts = tuple(list(cur.fetchall()[0]))
 			print cus_contacts
 		return render_template('compDetails.html',empid=session['empid'],comp_det = comp_det, cus_det = cus_det, cus_contacts = cus_contacts)
-	# except Exception as e:
-	#  	return render_template('indexEmp.html',empid=session['empid'] ,error =e)
+	except Exception as e:
+	 	return render_template('indexEmp.html',empid=session['empid'] ,error =e)
+
+
 
 @app.route("/resolved", methods=['POST'])
 def resolved():
@@ -555,6 +693,40 @@ def resolved():
 		except Exception as e:
 			return render_template("indexEmp.html",empid=session['empid'] ,error =e)
 
+@app.route("/report")
+def report():
+	try:
+		cur = db.cursor()
+		cur.execute("SELECT appliance_id, appliance_name, current_state FROM Appliance WHERE cus_id = %s" % session.get("cusid"))
+		db.commit()
+		res=[]
+		print 1
+		apps = cur.fetchall()
+		for i in range(len(apps)):
+			print 2
+			appid = int(apps[i][0])
+			cur.execute("SELECT appliance_id,switch_on_time,switch_off_time,TIMESTAMPDIFF(HOUR,switch_on_time,switch_off_time),TIMESTAMPDIFF(MINUTE,switch_on_time,switch_off_time),TIMESTAMPDIFF(SECOND,switch_on_time,switch_off_time) FROM Activity WHERE appliance_id = %s" % appid)
+			db.commit()
+			print 3
+			rep = list(cur.fetchall()[0])
+			hours = rep[-3]
+			if(hours):
+				minu = rep[-2]-60*hours
+				sec = rep[-1]-60*60*hours-60*minu
+			else:
+				hours=""
+				minu=""
+				sec=""
+			rep = rep[:-2]
+			rep[-1]=str(hours)+':'+str(minu)+':'+str(sec)
+			rep = tuple(rep)
+			res.append(rep)
+			print 4
+		return render_template('report.html',cusid=session['cusid'] , rep=res)
+	except Exception as e:
+		return render_template("index.html",cusid=session['cusid'], error = e)
+
+
 @app.route("/about")
 def about():
 	return render_template("aboutus.html",cusid=session['cusid'])
@@ -562,6 +734,14 @@ def about():
 @app.route("/contact")
 def contact():
 	return render_template("contactus.html",cusid=session['cusid'])
+
+@app.route("/aboutEmp")
+def aboutEmp():
+	return render_template("aboutusEmp.html",empid=session['empid'])
+
+@app.route("/contactEmp")
+def contactEmp():
+	return render_template("contactusEmp.html",empid=session['empid'])
 
 
 if __name__ == '__main__':

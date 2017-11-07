@@ -143,3 +143,5 @@ UPDATE Activity SET switch_off_time = NOW() WHERE appliance_id = NEW.appliance_i
 END IF;
 END;$$
 DELIMITER ;
+
+CREATE 

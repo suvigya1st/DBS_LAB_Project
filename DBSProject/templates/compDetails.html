@@ -20,11 +20,11 @@
 			</div>
 			<div class="collapse navbar-collapse" id="bs-nav-demo">
 				<div class="nav navbar-nav">
-					<li class="homeEmp"><a href="home">Home</a></li>					
+					<li class="homeEmp"><a href="homeEmp">Home</a></li>					
 				</div>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="about"><i class="fa fa-user-circle" aria-hidden="true"></i> About Us</a></li>
-					<li><a href="contact"><i class="fa fa-comments" aria-hidden="true"></i> Contact Us</a></li>
+					<li><a href="aboutEmp"><i class="fa fa-user-circle" aria-hidden="true"></i> About Us</a></li>
+					<li><a href="contactEmp"><i class="fa fa-comments" aria-hidden="true"></i> Contact Us</a></li>
 					<li><a href="logout"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
 				</ul>
 			</div>	
@@ -45,7 +45,7 @@
 			{% endif %}
 		</div>
 	</div>
-	<div class="container main">
+	<div class="container main" style="">
 		<div class="row">
 			<div class="col-md-12" style="text-align: center;">
 				<h3>COMPLAINT DETAILS</h3>
@@ -70,7 +70,7 @@
 					<div class="col-lg-6 col-md-6 col-sm-12" style="text-align: center;">
 						<h4>{{comp_det[1]}}</h4>
 					</div>
-
+				</div>
 				</div><div class="row">
 					<div class="col-lg-6 col-md-6 col-sm-12" style="text-align: center;">
 						<h4>Status</h4>
@@ -93,7 +93,7 @@
 						<h4>{{cus_det[0]}}</h4>
 					</div>
 				</div>
-				</div>
+			
 				<div class="row">
 					<div class="col-lg-6 col-md-6 col-sm-12" style="text-align: center;">
 						<h4>Email:</h4>
@@ -101,7 +101,6 @@
 					<div class="col-lg-6 col-md-6 col-sm-12" style="text-align: center;">
 						<h4>{{cus_det[1]}}</h4>
 					</div>
-				</div>
 				</div>
 				<div class="row">
 					<div class="col-lg-6 col-md-6 col-sm-12" style="text-align: center;">
@@ -124,7 +123,6 @@
 						</div>
 					</div>
 				{% endfor %}
-				
 
 				<div class="row">
 					<div class="col-md-12" style="text-align: center;">
